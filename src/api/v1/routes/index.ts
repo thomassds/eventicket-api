@@ -1,9 +1,16 @@
 import { Router } from "express";
+import { AuthenticationRouter } from "./auth";
+import { PermissionRouter } from "./permission";
+import { UserRouter } from "./user";
 
 export const getV1Routes = () => {
-  const v1 = Router();
+  const router = Router();
 
-  //   v1.use();
+  const routers = [PermissionRouter, UserRouter, AuthenticationRouter];
 
-  return v1;
+  routers.forEach((routerClass) => {
+    router.use(routerClass.getRouter());
+  });
+
+  return router;
 };

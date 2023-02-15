@@ -1,0 +1,17 @@
+[
+  {
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "postgres",
+    "database": "eventicket",
+    "logging": false,
+    "entities": ["dist/api/database/entities/*.js"],
+    "migrations": ["dist/api/database/migrations/*.js"],
+    "cli": {
+      "migrationsDir": "src/api/database/migrations",
+      "entitiesDir": "src/api/database/entities"
+    }
+  }
+]

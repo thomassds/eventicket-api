@@ -2,8 +2,13 @@ import { Router, NextFunction, Request, Response, Express } from "express";
 import * as swaggerUi from "swagger-ui-express";
 import * as YAMLJS from "yamljs";
 import { getV1Routes } from "../api/v1/routes";
-import { HttpError } from "./exceptions";
-
+import { BusinessError } from "./exceptions/businessError";
+import { UnprocessedEntityError } from "./exceptions/unprocessedEntityError";
+import { AppError } from "./exceptions/appError";
+interface dataInterface {
+  message: string;
+  internalCode: number | undefined;
+}
 export class AppRouters {
   static load(app: Express) {
     try {
@@ -29,8 +34,6 @@ export class AppRouters {
   }
 
   static handleError(app: Express) {
-    console.info("Loading ErrorHandler");
-
     app.use(
       (
         error: Error,
@@ -38,17 +41,32 @@ export class AppRouters {
         response: Response,
         next: NextFunction
       ) => {
-        console.log(`Error handler - ${error}`);
+        console.error(new Date(), error);
 
-        if (error instanceof HttpError) {
-          return response.status(error.statusCode).json({
-            code: error.getHttpCode(),
+        if (error instanceof AppError) {
+          console.error(new Date(), "Previous:", error.getPrevious());
 
+          if (error instanceof UnprocessedEntityError) {
+            return response.status(error.getStatusCode()).json({
+              errors: error.getErrors(),
+            });
+          }
+
+          const data: dataInterface = {
             message: error.message,
-          });
+            internalCode: undefined,
+          };
+
+          if (error instanceof BusinessError) {
+            data.internalCode = error.getAppInternalCode();
+          }
+
+          return response.status(error.getStatusCode()).json(data);
         }
 
-        return response.status(500).send("Something broke!");
+        return response.status(500).json({
+          message: "Something broke!",
+        });
       }
     );
   }
