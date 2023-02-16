@@ -9,4 +9,8 @@ export interface SessionRepositoryInterface {
     token,
   }: SessionInterface): Promise<Session>;
   logoff(userId: number): Promise<void>;
+  getByUserIdAndToken(
+    userId: number,
+    token: string
+  ): Promise<Session | undefined>;
 }

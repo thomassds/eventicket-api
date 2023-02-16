@@ -3,39 +3,59 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToMany,
-  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Permission } from "./permission";
-import { Session } from "./session";
 
-@Entity("users")
-export class User {
+@Entity("events")
+export class Event {
   @PrimaryColumn()
   id: number;
 
-  @Column({
-    name: "email",
-    nullable: false,
-    type: "varchar",
-  })
-  email: string;
+  @Column({ name: "user_id", nullable: false, type: "int4" })
+  userId: number;
 
   @Column({
-    name: "password",
+    name: "name",
     nullable: false,
     type: "varchar",
   })
-  password: string;
+  name: string;
 
   @Column({
-    name: "phone",
+    name: "description",
     nullable: false,
     type: "varchar",
   })
-  phone: string;
+  description: string;
+
+  @Column({
+    name: "amount_tickets",
+    nullable: false,
+    type: "int",
+  })
+  amountTickets: number;
+
+  @Column({
+    name: "online",
+    nullable: false,
+    type: "boolean",
+  })
+  online: boolean;
+
+  @Column({
+    name: "started_at",
+    nullable: false,
+    type: "timestamptz",
+  })
+  startedAt: Date;
+
+  @Column({
+    name: "finish_at",
+    nullable: false,
+    type: "timestamptz",
+  })
+  finishAt: Date;
 
   @CreateDateColumn({
     name: "created_at",
@@ -57,10 +77,4 @@ export class User {
     type: "timestamptz",
   })
   deletedAt: Date;
-
-  @ManyToMany(() => Permission, (permission) => permission.users)
-  permissions: Permission[];
-
-  @OneToMany(() => Session, (session) => session.user)
-  sessions: Session[];
 }

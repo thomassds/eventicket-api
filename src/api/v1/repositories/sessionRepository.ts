@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 import { EntityRepository, getRepository, Repository } from "typeorm";
-import { DatabaseError } from "../../../config/exceptions";
+import { DatabaseError } from "../../../config/exceptions/databaseError";
 import { Session, User } from "../../database/entities";
 import { SessionInterface } from "../interfaces";
 import { SessionRepositoryInterface } from "./interfaces";
@@ -32,6 +32,7 @@ export class SessionRepository implements SessionRepositoryInterface {
 
       return response;
     } catch (error) {
+      console.log(error);
       throw new DatabaseError("Falha ao tentar cadastrar esta sessão");
     }
   }
@@ -41,6 +42,23 @@ export class SessionRepository implements SessionRepositoryInterface {
       await this.repository.update({ userId }, { revoke: true });
 
       return;
+    } catch (error) {
+      throw new DatabaseError("Falha ao tentar cadastrar esta sessão");
+    }
+  }
+
+  async getByUserIdAndToken(
+    userId: number,
+    token: string
+  ): Promise<Session | undefined> {
+    try {
+      const response = await this.repository.findOne({
+        userId,
+        token,
+        revoke: false,
+      });
+
+      return response;
     } catch (error) {
       throw new DatabaseError("Falha ao tentar cadastrar esta sessão");
     }

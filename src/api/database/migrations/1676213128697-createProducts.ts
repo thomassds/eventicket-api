@@ -17,6 +17,11 @@ export class createProducts1676213128697 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: "description",
+            type: "varchar",
+            isNullable: false,
+          },
+          {
             name: "value",
             type: "float",
             isNullable: false,

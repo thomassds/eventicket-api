@@ -1,3 +1,4 @@
+import { addYears } from "date-fns";
 import Container, { Service } from "typedi";
 import { UnprocessedEntityError } from "../../../config/exceptions";
 import { AuthInterface } from "../interfaces";
@@ -35,7 +36,7 @@ export class AuthLogic {
     const token = this.jwt.generateToken(user.id);
 
     const response = await this.sessionRepository.login({
-      expireIn: new Date(),
+      expireIn: addYears(new Date(), 1),
       revoke: false,
       token,
       userId: user.id,

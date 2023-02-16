@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 import { EntityRepository, getRepository, Repository } from "typeorm";
-import { DatabaseError } from "../../../config/exceptions";
+import { DatabaseError } from "../../../config/exceptions/databaseError";
 import { Permission } from "../../database/entities";
 import { PermissionInterface } from "../interfaces";
 import { PermissionRepositoryInterface } from "./interfaces";

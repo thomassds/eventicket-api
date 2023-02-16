@@ -3,17 +3,17 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToMany,
-  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { User } from "./user";
 
-@Entity("permissions")
-export class Permission {
+@Entity("products")
+export class Product {
   @PrimaryColumn()
   id: number;
+
+  @Column({ name: "event_id", nullable: false, type: "int4" })
+  eventId: number;
 
   @Column({
     name: "description",
@@ -21,6 +21,20 @@ export class Permission {
     type: "varchar",
   })
   description: string;
+
+  @Column({
+    name: "value",
+    nullable: false,
+    type: "float",
+  })
+  value: number;
+
+  @Column({
+    name: "amount_tickets",
+    nullable: false,
+    type: "int",
+  })
+  amountTickets: number;
 
   @CreateDateColumn({
     name: "created_at",
@@ -42,7 +56,4 @@ export class Permission {
     type: "timestamptz",
   })
   deletedAt: Date;
-
-  @ManyToMany(() => User, (user) => user.permissions)
-  users: User[];
 }

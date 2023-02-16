@@ -3,9 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
+  OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { User } from "./user";
 
 @Entity("sessions")
 export class Session {
@@ -56,4 +59,7 @@ export class Session {
     type: "timestamptz",
   })
   deletedAt: Date;
+
+  @OneToOne(() => User, (user) => user.sessions)
+  user: User;
 }

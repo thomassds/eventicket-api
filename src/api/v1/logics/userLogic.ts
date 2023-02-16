@@ -1,5 +1,5 @@
 import Container, { Service } from "typedi";
-import { UnprocessedEntityError } from "../../../config/exceptions";
+import { UnprocessedEntityError } from "../../../config/exceptions/unprocessedEntityError";
 import { UserInterface } from "../interfaces";
 import { UserRepository } from "../repositories";
 import { Bcrypt } from "../services/bcrypt";
